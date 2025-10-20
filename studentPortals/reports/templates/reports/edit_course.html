@@ -1,0 +1,42 @@
+
+{% extends "reports/admin_base.html" %}
+{% block content %}
+
+<div style="max-width:500px; margin:auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
+    <h2 style="color:#007bff;">Edit Course</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Course Name:</label><br>
+        <input type="text" name="name" value="{{ course.name }}" required
+               style="width:100%; padding:8px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;">
+
+        <label>Course Code:</label><br>
+        <input type="text" name="code" value="{{ course.code }}" required
+               style="width:100%; padding:8px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;">
+
+        <label>Credit Units:</label><br>
+        <input type="number" name="credit_units" value="{{ course.credit_units }}" required
+               style="width:100%; padding:8px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;">
+
+        {% if request.user.profile.role != 'lecturer' %}
+        <label>Lecturer:</label><br>
+        <select name="lecturer" style="width:100%; padding:8px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc;">
+            {% for lecturer in lecturers %}
+                <option value="{{ lecturer.id }}" {% if lecturer == course.lecturer %}selected{% endif %}>
+                    {{ lecturer.user.username }}
+                </option>
+            {% endfor %}
+        </select>
+        {% endif %}
+
+        <button type="submit" style="width:100%; padding:10px; background:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;">
+            Save Changes
+        </button>
+    </form>
+
+    <a href="{% url 'admin_courses' %}" 
+       style="display:inline-block; margin-top:10px; text-decoration:none; color:#007bff;">← Back to Courses</a>
+</div>
+
+{% endblock %}

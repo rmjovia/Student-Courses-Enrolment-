@@ -1,0 +1,24 @@
+{% extends "reports/admin_base.html" %}
+{% block content %}
+
+<h1 style="margin-bottom:20px;">Course Reviews</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for review in reviews %}
+    <div class="card" style="flex: 1 1 300px; background: #fff; padding: 20px; border-radius: 10px; 
+                             box-shadow: 0 3px 6px rgba(0,0,0,0.1);">
+        <h3 style="margin-bottom:10px; color:#007bff;">{{ review.student.name }}</h3>
+        <p><strong>Course:</strong> {{ review.course.name }} ({{ review.course.code }})</p>
+        <p><strong>Rating:</strong> {{ review.rating }}/5</p>
+        <p><strong>Comment:</strong> {{ review.comment|default:"-" }}</p>
+    </div>
+    {% empty %}
+    <p>No reviews available.</p>
+    {% endfor %}
+</div>
+
+<a href="{% url 'admin_dashboard' %}" class="btn-back" 
+   style="display:inline-block; margin-top:20px; padding:8px 14px; background:#007bff; color:white; 
+          border-radius:5px; text-decoration:none;">← Back to Dashboard</a>
+
+{% endblock %}

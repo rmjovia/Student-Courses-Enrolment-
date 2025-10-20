@@ -1,0 +1,76 @@
+{% extends "reports/admin_base.html" %}
+{% block content %}
+
+<div style="padding: 25px; background: #f9fafb; min-height: 100vh;">
+
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-back">← Back to Dashboard</a>
+
+    <div class="card" style="background:#fff; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
+        <h2>Lecturers Management</h2>
+        <a href="{% url 'add_lecturer' %}" class="btn btn-add" style="margin-bottom:15px;">+ Add New Lecturer</a>
+
+        {% if lecturers %}
+        <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background:#007bff; color:white;">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Courses Taught</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lecturer in lecturers %}
+                <tr style="border-bottom:1px solid #ddd;">
+                    <td>{{ lecturer.user.username }}</td>
+                    <td>{{ lecturer.user.email }}</td>
+                    <td>
+                        {% for course in courses %}
+                            {% if course.lecturer == lecturer.user.username %}
+                                {{ course.name }}{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                        {% empty %}
+                            <em>No courses assigned</em>
+                        {% endfor %}
+                    </td>
+                    <td>
+                    
+                        <form method="post" action="{% url 'delete_lecturer' lecturer.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="
+                                padding:6px 12px; 
+                                background-color:#dc3545; 
+                                color:white; 
+                                border:none; 
+                                border-radius:4px; 
+                                cursor:pointer;
+                                font-size:14px;">
+                                Delete
+                            </button>
+                        </form>
+
+                        <a href="{% url 'edit_lecturer' lecturer.id %}" style="
+                            display:inline-block; 
+                            padding:6px 12px; 
+                            background-color:#007bff; 
+                            color:white; 
+                            text-decoration:none; 
+                            border-radius:4px; 
+                            margin-left:5px;
+                            font-size:14px;">
+                            Edit
+                        </a>
+
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No lecturers available yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

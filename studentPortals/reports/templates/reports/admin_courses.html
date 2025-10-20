@@ -1,0 +1,74 @@
+{% extends "reports/admin_base.html" %}
+{% block content %}
+
+<h1 style="margin-bottom:20px;">Courses Management</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for course in courses %}
+    <div class="card" style="flex: 1 1 300px; background: #fff; padding: 20px; border-radius: 10px; 
+                             box-shadow: 0 3px 6px rgba(0,0,0,0.1);">
+        <h3 style="margin-bottom:10px; color:#007bff;">{{ course.name }}</h3>
+
+        <p><strong>Code:</strong> {{ course.code }}</p>
+        <p><strong>Credit Units:</strong> {{ course.credit_units }}</p>
+        <p><strong>Lecturer:</strong> {{ course.lecturer }}</p>
+        <p><strong>Students Enrolled:</strong> {{ course.students.count }}</p>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+            <a href="{% url 'admin_course_students' course.id %}" 
+            style="background:#007bff; color:white; padding:8px 14px; border-radius:10px; 
+                    text-decoration:none; transition:0.3s;">
+            View Students
+            </a>
+
+            <a href="{% url 'edit_course' course.id %}" 
+            style="background:#007bff; color:white; padding:8px 14px; border-radius:10px; 
+                    text-decoration:none; transition:0.3s;">
+            Edit
+            </a>
+
+            <form method="post" action="{% url 'delete_course' course.id %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" 
+                    style="background:#91ac97; color:white; padding:8px 14px; border:none; border-radius:10px; 
+                        cursor:pointer; transition:0.3s;">
+                    Delete
+                </button>
+            </form>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No courses available yet.</p>
+    {% endfor %}
+</div>
+
+<a href="{% url 'admin_dashboard' %}" class="btn-back" 
+   style="display:inline-block; margin-top:20px; padding:8px 16px; background:#007bff; color:white; 
+          border-radius:10px; text-decoration:none;">← Back to Dashboard</a>
+
+<div style="margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
+    <a href="{% url 'download_courses_csv' %}" 
+       style="background: #007bff; color: white; padding: 10px 15px; border-radius: 10px; text-decoration: none;">
+        Download Courses
+    </a>
+
+    <a href="{% url 'download_students_per_course_csv' %}" 
+       style="background: #007bff; color: white; padding: 10px 15px; border-radius: 10px; text-decoration: none;">
+        Download Students per Course
+    </a>
+
+    <a href="{% url 'download_reviews_csv' %}" 
+       style="background: #007bff; color: white; padding: 10px 15px; border-radius: 10px; text-decoration: none;">
+        Download Course Reviews
+    </a>
+
+    <a href="{% url 'download_summary_csv' %}" 
+       style="background: #007bff; color: white; padding: 10px 15px; border-radius: 10px; text-decoration: none;">
+        Download Full Report
+    </a>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends "reports/base.html" %}
+{% block content %}
+
+<style>
+    .report-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin: 30px auto;
+        max-width: 900px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .report-header {
+        border-bottom: 2px solid #007bff;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+
+    .report-header h2 {
+        color: #007bff;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .report-header p {
+        color: #555;
+        margin: 0;
+    }
+
+    .summary {
+        display: flex;
+        gap: 30px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .summary-card {
+        flex: 1;
+        min-width: 200px;
+        background: #f8f9fa;
+        border-left: 5px solid #007bff;
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .summary-card h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .summary-card p {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        font-size: 15px;
+    }
+
+    th, td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #888;
+        padding: 20px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 25px;
+        background: #6c757d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: background 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background: #5a6268;
+    }
+</style>
+
+<div class="report-container">
+    <div class="report-header">
+        <h2>Student Report</h2>
+        <p><strong>{{ student.name }}</strong> — {{ student.email }}</p>
+    </div>
+
+    <div class="summary">
+        <div class="summary-card">
+            <h4>Current GPA</h4>
+            <p>{{ gpa|floatformat:2 }}</p>
+        </div>
+        <div class="summary-card">
+            <h4>Cumulative GPA (CGPA)</h4>
+            <p>{{ cgpa|floatformat:2 }}</p>
+        </div>
+        <div class="summary-card">
+            <h4>Enrolled Courses</h4>
+            <p>{{ grades|length  }}</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top: 30px; color: #007bff;">Course Grades</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Score</th>
+                <th>Letter Grade</th>
+                <th>Grade Point</th>
+                <th>NP Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in grades %}
+            <tr>
+                <td>{{ grade.course.name }}</td>
+                <td>{{ grade.score }}</td>
+                <td>{{ grade.letter }}</td>
+                <td>{{ grade.grade_point }}</td>
+                <td>{{ grade.np_status }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="no-data">No grades available for this student.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'admin_dashboard' %}" class="back-btn">← Back to Dashboard</a>
+</div>
+
+{% endblock %}

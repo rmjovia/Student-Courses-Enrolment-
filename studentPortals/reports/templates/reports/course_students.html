@@ -1,0 +1,92 @@
+
+{% extends "reports/base.html" %}
+{% block content %}
+
+<div style="padding: 30px; background-color: #f1f3f5; min-height: 100vh;">
+
+    <!-- Container Card -->
+    <div style="max-width: 1000px; margin: 0 auto;">
+        <div style="background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px;">
+            
+            <h2 style="color: #007bff; margin-bottom: 25px; text-align: center;">
+                Students Enrolled in {{ course.name }}
+            </h2>
+
+            {% if students_with_grades %}
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #5bc0de; color: white;">
+                            <th style="padding: 10px; text-align: left;">Student</th>
+                            <th style="padding: 10px; text-align: left;">Score</th>
+                            <th style="padding: 10px; text-align: left;">Letter Grade</th>
+                            <th style="padding: 10px; text-align: left;">Grade Point</th>
+                            <th style="padding: 10px; text-align: left;">NP Status</th>
+                            <th style="padding: 10px; text-align: left;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in students_with_grades %}
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 8px;">{{ entry.student.name }}</td>
+                            <td style="padding: 8px;">
+                                {% if entry.grade and entry.grade.score is not None %}
+                                    {{ entry.grade.score }}
+                                {% else %}
+                                    Not graded yet
+                                {% endif %}
+                            </td>
+                            <td style="padding: 8px;">
+                                {% if entry.grade %}{{ entry.grade.letter|default:"-" }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding: 8px;">
+                                {% if entry.grade %}{{ entry.grade.grade_point|default:"-" }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding: 8px;">
+                                {% if entry.grade %}{{ entry.grade.np_status|default:"-" }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding: 8px;">
+                                <form method="post" style="display:flex; gap:5px;">
+                                    {% csrf_token %}
+                                    <input type="number" name="score" min="0" max="100" 
+                                           placeholder="Enter score"
+                                           {% if entry.grade and entry.grade.score is not None %}
+                                           value="{{ entry.grade.score }}"{% endif %}
+                                           style="width:70px; padding:4px; border-radius:4px; border:1px solid #ccc;" 
+                                           required>
+                                    <button type="submit" 
+                                            style="padding:6px 10px; background:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;">
+                                        {% if entry.grade and entry.grade.score is not None %}Update{% else %}Assign{% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="margin-top: 15px; color: #6c757d; text-align: center;">
+                No students enrolled in this course yet.
+            </p>
+            {% endif %}
+
+            <a href="{% url 'lecturer_dashboard' %}" 
+               style="display: inline-block; margin-top: 20px; padding: 10px 16px; 
+                      background-color: #5bc0de; color: white; border-radius: 8px; 
+                      text-decoration: none; text-align: center; font-weight: 500;">
+               ← Back to Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    tr:hover {
+        background-color: #f1f3f5;
+    }
+</style>
+
+{% endblock %}

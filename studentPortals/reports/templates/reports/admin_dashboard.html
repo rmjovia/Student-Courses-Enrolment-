@@ -1,0 +1,74 @@
+{% extends "reports/admin_base.html" %}
+{% block content %}
+  <div class="card-row">
+    <div class="card">
+      <h3>Total Students</h3>
+      <div class="stat">{{ total_students }}</div>
+      <div style="margin-top:8px;"><a class="btn view" href="{% url 'admin_students' %}">View students</a></div>
+    </div>
+
+    <div class="card">
+      <h3>Total Lecturers</h3>
+      <div class="stat">{{ total_lecturers }}</div>
+      <div style="margin-top:8px;"><a class="btn view" href="{% url 'admin_lecturers' %}">View lecturers</a></div>
+    </div>
+
+    <div class="card">
+      <h3>Total Courses</h3>
+      <div class="stat">{{ total_courses }}</div>
+      <div style="margin-top:8px;"><a class="btn view" href="{% url 'admin_courses' %}">Manage courses</a></div>
+    </div>
+
+    <div class="card">
+      <h3>Total Grades</h3>
+      <div class="stat">{{ total_grades }}</div>
+      <div style="margin-top:8px;"><a class="btn view" href="{% url 'admin_grades' %}">Manage grades</a></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:18px;">
+    <h3>Recent Courses</h3>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Code</th><th>Lecturer</th><th>CU</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for course in recent_courses %}
+        <tr>
+          <td>{{ course.name }}</td>
+          <td>{{ course.code }}</td>
+          <td>{{ course.lecturer }}</td>
+          <td>{{ course.credit_units }}</td>
+          
+          <td>
+            <a class="btn view" href="{% url 'admin_course_students' course.id %}">Students</a>
+           
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="small-muted">No courses yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Top performers</h3>
+    <table>
+      <thead><tr><th>Student</th><th>GPA</th><th>Action</th></tr></thead>
+      <tbody>
+        {% for s in top_students %}
+        <tr>
+          <td>{{ s.student.name }}</td>
+          <td>{{ s.gpa|floatformat:2 }}</td>
+         
+          <td><a class="btn view" href="{% url 'student_report' s.student.id %}">View</a>
+</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="small-muted">No data</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

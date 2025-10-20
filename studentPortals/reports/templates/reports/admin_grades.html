@@ -1,0 +1,41 @@
+{% extends "reports/admin_base.html" %}
+{% block content %}
+<h1>Manage Grades</h1>
+
+{% if grades %}
+<table>
+    <tr>
+        <th>Student</th>
+        <th>Course</th>
+        <th>Score</th>
+        <th>Letter</th>
+        <th>Grade Point</th>
+        <th>NP Status</th>
+        <th>Action</th>
+    </tr>
+    {% for grade in grades %}
+    <tr>
+        <td>{{ grade.student.name }}</td>
+        <td>{{ grade.course.name }}</td>
+        <td>{{ grade.score }}</td>
+        <td>{{ grade.letter }}</td>
+        <td>{{ grade.grade_point }}</td>
+        <td>{{ grade.np_status }}</td>
+        <td>
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="grade_id" value="{{ grade.id }}">
+                <input type="number" name="score" min="0" max="100" value="{{ grade.score }}" required>
+                <button type="submit" class="btn btn-manage">Update</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No grades available.</p>
+{% endif %}
+
+<a href="{% url 'admin_dashboard' %}" class="btn-back">← Back to Dashboard</a>
+
+{% endblock %}

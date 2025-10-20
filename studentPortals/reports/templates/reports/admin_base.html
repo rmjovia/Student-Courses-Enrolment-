@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin • {{ request.user.username }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg:#f7f9fb;
+      --sidebar:#0f1720;
+      --accent:#2563eb;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --success:#16a34a;
+      --danger:#ef4444;
+      --radius:10px;
+      --gap:18px;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    .btn-back {
+      display: inline-block;
+      background-color: #007bff; /* bright blue */
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-manage {
+        background-color: #007bff;      /* Bright blue */
+        color: white;                   /* White text */
+        padding: 8px 14px;              /* Comfortable spacing */
+        border: none;                   /* No border */
+        border-radius: 6px;             /* Smooth corners */
+        font-size: 14px;                /* Readable text */
+        cursor: pointer;                /* Show pointer on hover */
+        transition: background 0.3s ease;
+    }
+
+    .btn-manage:hover {
+        background-color: #0056b3;      /* Darker blue on hover */
+    }
+      
+    
+    .btn-back:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+
+    html,body{height:100%; margin:0; background:var(--bg); color:#0b1220;}
+    .wrap{display:flex; min-height:100vh;}
+    /* Sidebar */
+    .sidebar{
+      width:240px; background:linear-gradient(180deg,#071026 0%, #0f1720 100%);
+      color:#fff; padding:28px 18px; box-sizing:border-box;
+    }
+    .brand{font-weight:700; font-size:18px; margin-bottom:18px; display:flex; gap:10px; align-items:center;}
+    .nav{margin-top:18px;}
+    .nav a{
+      display:flex; gap:12px; align-items:center; text-decoration:none; color:rgba(255,255,255,0.95);
+      padding:10px 12px; border-radius:8px; margin-bottom:6px; font-weight:600;
+    }
+    .nav a:hover{background:rgba(255,255,255,0.04);}
+    .nav a.active{background:rgba(255,255,255,0.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);}
+    .sidebar .small{font-size:12px; color:rgba(255,255,255,0.6); margin-top:8px;}
+
+    /* Main area */
+    .main{flex:1; padding:28px; box-sizing:border-box;}
+    .topbar{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px;}
+    .search{flex:1; max-width:540px;}
+    .card-row{display:flex; gap:var(--gap); flex-wrap:wrap; margin-bottom:22px;}
+    .card{background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:0 6px 18px rgba(11,17,24,0.06); flex:1; min-width:200px;}
+    .card h3{margin:0 0 8px 0; font-size:13px; color:var(--muted);}
+    .card .stat{font-size:28px; font-weight:700; margin-top:6px;}
+    table{width:100%; border-collapse:collapse; background:var(--card); border-radius:8px; overflow:hidden; box-shadow:0 6px 18px rgba(11,17,24,0.04);}
+    th,td{padding:12px 14px; text-align:left; border-bottom:1px solid #eef2f6; font-size:14px;}
+    th{background:#f8fafc; font-weight:700; color:#374151;}
+    td .meta{color:var(--muted); font-size:13px;}
+    .btn{display:inline-block; padding:8px 10px; border-radius:8px; text-decoration:none; color:white; font-weight:600; font-size:13px;}
+    .btn.view{background:var(--accent);} .btn.edit{background:#f59e0b;} .btn.delete{background:var(--danger);}
+    .small-muted{font-size:13px; color:var(--muted);}
+    footer{margin-top:28px; color:var(--muted); font-size:13px;}
+    @media (max-width:900px){ .sidebar{display:none;} .main{padding:18px;} .card-row{flex-direction:column;} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="sidebar">
+      <div class="brand">School Admin</div>
+      <div class="small">Signed in as</div>
+      <div style="margin:8px 0 16px 0; font-weight:700;">{{ request.user.username }}</div>
+
+      <nav class="nav">
+        <a href="{% url 'admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{% url 'admin_students' %}" class="{% if request.resolver_match.url_name == 'admin_students' %}active{% endif %}">Students</a>
+        <a href="{% url 'admin_lecturers' %}" class="{% if request.resolver_match.url_name == 'admin_lecturers' %}active{% endif %}">Lecturers</a>
+        <a href="{% url 'admin_courses' %}" class="{% if request.resolver_match.url_name == 'admin_courses' %}active{% endif %}">Courses</a>
+        <a href="{% url 'admin_grades' %}" class="{% if request.resolver_match.url_name == 'admin_grades' %}active{% endif %}">Grades</a>
+        <a href="{% url 'admin_reviews' %}" class="{% if request.resolver_match.url_name == 'admin_reviews' %}active{% endif %}">Reviews</a>
+      </nav>
+
+      <div class="small" style="margin-top:20px;">Quick actions</div>
+      <div style="margin-top:8px;">
+        <a class="btn view" href="{% url 'admin_create_course' %}" style="background:#10b981;">+ New Course</a>
+        <form method="post" action="{% url 'logout' %}" style="display:inline-block; margin-left:8px;">
+          {% csrf_token %}
+          <button class="btn delete" type="submit" style="background:#ef4444; border:none; cursor:pointer;">Logout</button>
+        </form>
+      </div>
+
+      <div class="small sidebar-foot" style="position: absolute; bottom:18px; left:18px; right:18px;">v1.0 • Admin panel</div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div><strong>Admin Dashboard</strong></div>
+        <div class="small-muted">Welcome back — manage courses, students & grades</div>
+      </div>
+
+      {% block content %}{% endblock %}
+      <footer>© {{ now|date:"Y" }} • MRJ</footer>
+    </main>
+  </div>
+</body>
+</html>
