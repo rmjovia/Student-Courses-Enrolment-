@@ -214,6 +214,11 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
+<img width="618" height="618" alt="image (1)" src="https://github.com/user-attachments/assets/3ee299ee-5d65-40f3-9fe6-d5003bfb57a0" />
+<img width="657" height="657" alt="image (3)" src="https://github.com/user-attachments/assets/b9214a5a-f2b1-4912-aaa6-b849d951a49a" />
+<img width="615" height="615" alt="image (2)" src="https://github.com/user-attachments/assets/d6171150-5282-4617-a4e1-f4f1b8d4fcbf" />
+<img width="667" height="667" alt="image (4)" src="https://github.com/user-attachments/assets/24a22279-4537-49fd-b2c5-4410b0acc9be" />
+
 ##  Author
 
 **Rachel Mukisa**
@@ -222,4 +227,5 @@ load_dotenv()
 🔗 [GitHub Profile](https://github.com/rmjovia)
 
 ---
+
 
