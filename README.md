@@ -213,6 +213,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 ```
+<img width="700" height="654" alt="image" src="https://github.com/user-attachments/assets/c8dd71ff-ef97-48f5-8758-15ac830be2a2" />
 
 <img width="618" height="618" alt="image (1)" src="https://github.com/user-attachments/assets/3ee299ee-5d65-40f3-9fe6-d5003bfb57a0" />
 <img width="657" height="657" alt="image (3)" src="https://github.com/user-attachments/assets/b9214a5a-f2b1-4912-aaa6-b849d951a49a" />
@@ -227,5 +228,6 @@ load_dotenv()
 🔗 [GitHub Profile](https://github.com/rmjovia)
 
 ---
+
 
 
