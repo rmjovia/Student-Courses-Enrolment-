@@ -1,0 +1,14 @@
+# Core Django framework
+Django>=4.2,<5.0
+
+# Production server
+gunicorn
+
+# Serve static files in production
+whitenoise[brotli]
+
+# For managing environment variables easily (optional)
+python-dotenv
+
+# Optional: If you want to store environment configs locally
+# (comment out if not using .env files)
